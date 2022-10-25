@@ -44,9 +44,10 @@
 #ifdef BSD
 #include <sys/wait.h>
 #include <sys/time.h>
-#include <sys/resource.h>
+//#include <sys/resource.h>
 #endif
 #include <sys/ioctl.h>
+#include <stdio.h>
 
 #include "shell.h"
 #if JOBS
@@ -431,7 +432,7 @@ sprint_status(char *os, int status, int sigonly)
 				goto out;
 #endif
 		}
-		s = stpncpy(s, strsignal(st), 32);
+		s = stpcpy(s, strsignal(st));
 #ifdef WCOREDUMP
 		if (WCOREDUMP(status)) {
 			s = stpcpy(s, " (core dumped)");
@@ -968,7 +969,7 @@ struct job *vforkexec(union node *n, char **argv, const char *path, int idx)
 	sigblockall(NULL);
 	vforked++;
 
-	pid = vfork();
+	pid = fork();
 
 	if (!pid) {
 		forkchild(jp, n, FORK_FG);
@@ -1176,7 +1177,7 @@ waitproc(int block, int *status)
 	do {
 		gotsigchld = 0;
 		do
-			err = wait3(status, flags, NULL);
+			err = waitpid(-1, status, flags);
 		while (err < 0 && errno == EINTR);
 
 		if (err || (err = -!block))

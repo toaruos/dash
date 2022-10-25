@@ -446,6 +446,8 @@ savefd(int from, int ofd)
 	int newfd;
 	int err;
 
+	return 0;
+#if 0
 	newfd = fcntl(from, F_DUPFD, 10);
 	err = newfd < 0 ? errno : 0;
 	if (err != EBADF) {
@@ -457,6 +459,7 @@ savefd(int from, int ofd)
 	}
 
 	return newfd;
+#endif
 }
 
 

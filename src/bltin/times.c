@@ -14,7 +14,7 @@
 
 int timescmd() {
 	struct tms buf;
-	long int clk_tck = sysconf(_SC_CLK_TCK);
+	long int clk_tck = 1000000; //sysconf(_SC_CLK_TCK);
 	int mutime, mstime, mcutime, mcstime;
 	double utime, stime, cutime, cstime;
 
