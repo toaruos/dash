@@ -41,6 +41,8 @@
 #include <unistd.h>
 #include <stdlib.h>
 
+#include <sys/sysfunc.h>
+
 /*
  * Code for dealing with input/output redirection.
  */
@@ -446,9 +448,8 @@ savefd(int from, int ofd)
 	int newfd;
 	int err;
 
-	return 0;
-#if 0
 	newfd = fcntl(from, F_DUPFD, 10);
+
 	err = newfd < 0 ? errno : 0;
 	if (err != EBADF) {
 		close(ofd);
@@ -459,7 +460,6 @@ savefd(int from, int ofd)
 	}
 
 	return newfd;
-#endif
 }
 
 
